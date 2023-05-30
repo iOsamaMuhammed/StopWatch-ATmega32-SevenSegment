@@ -1,7 +1,6 @@
 
 /*
-
- * Stop watch Project Description:
+ * Stop Watch Project Description:
  *
  * This code implements a stopwatch using an ATmega32 micro-controller.
  * Timer1 is configured with a pre-scaler of 64,
@@ -88,9 +87,9 @@ void INT0_Init(void)
 		 * 2. Enable external interrupt pin INT0
 		 * 3. Enable internal pull-up resistor for INT0
 		 */
-		DDRD  &=~ (1<<PD2);              	// Configure INT0/PD2 as input pin
-		PORTD |=  (1<<INT0);				// Enable internal pull-up resistor for INT0
-		MCUCR |=  (1<<ISC01);   			// Trigger INT0 with the falling edge
+		DDRD  &=~ (1<<PD2);                 // Configure INT0/PD2 as input pin
+		PORTD |=  (1<<INT0);		    // Enable internal pull-up resistor for INT0
+		MCUCR |=  (1<<ISC01);   	    // Trigger INT0 with the falling edge
 		GICR  |=  (1<<INT0);                // Enable external interrupt pin INT0
 }
 
@@ -100,8 +99,8 @@ void INT1_Init(void)
 		 * 1. Configure External Interrupt INT1 with rising edge
 		 * 2. Connect a push button with the internal pull-down resistor
 		 */
-		DDRD  &= ~(1<<INT1);               // Configure INT1/PD3 as input pin
-		MCUCR  = (1<<ISC10)|(1<<ISC11);   	 // Trigger INT0 with the rising edge
+		DDRD  &= ~(1<<INT1);                 // Configure INT1/PD3 as input pin
+		MCUCR  = (1<<ISC10)|(1<<ISC11);      // Trigger INT0 with the rising edge
 		GICR  |= (1<<INT1);                  // Enable external interrupt pin INT1
 }
 void INT2_Init(void)
@@ -144,12 +143,12 @@ void updateTime(void){
 int main(void)
 {
 	DDRC = 0x0F; 				 // Configure the first four pins in PORTC as output pins connected  to 7447 decoder
-	PORTC &= 0xF0;               // Initialize the 7-segment display zero at the beginning.
+	PORTC &= 0xF0;                           // Initialize the 7-segment display zero at the beginning.
 
 	DDRA =0x3F ; 				 // First 6-pins in PORTA as the enable/disable pins for the six 7-segments
 	PORTA =0x3F;				 // Enable all 7-segments at the beginning
 
-	SREG |=(1<<7);					//Enable global interrupts by setting I-bit
+	SREG |=(1<<7);			         //Enable global interrupts by setting I-bit
 
 	//Call initialization function of Timers & interrupts
 	Timer1_Init(); 	// Start Timer 1
@@ -158,22 +157,22 @@ int main(void)
 	INT2_Init();	// Start Interrupt 2
 	while (1){
 		updateTime();
-		ENABLEBIT(PA0);		//  Enable the display for this digit
+		ENABLEBIT(PA0);		//  Enable bit display for this digit
 		DATADISP(sec1); 	//  Display Seconds Units
 		_delay_us(2);
-		ENABLEBIT(PA1);
+		ENABLEBIT(PA1);		//  Enable bit display for this digit	
 		DATADISP(sec2); 	//  Display Seconds Tens
 		_delay_us(2);
-		ENABLEBIT(PA2);
+		ENABLEBIT(PA2);		//  Enable bit display for this digit
 		DATADISP(min1); 	//  Display Minutes units
 		_delay_us(2);
-		ENABLEBIT(PA3);
+		ENABLEBIT(PA3);		//  Enable bit display for this digit
 		DATADISP(min2); 	//  Display Minutes Tens
 		_delay_us(2);
-		ENABLEBIT(PA4);
+		ENABLEBIT(PA4);		//  Enable bit display for this digit
 		DATADISP(hour1);; 	//  Display Hours units
 		_delay_us(2);
-		ENABLEBIT(PA5);
+		ENABLEBIT(PA5);		//  Enable bit display for this digit
 		DATADISP(hour2); 	//  Display Hours Tens
 		_delay_us(2);
 	}
